@@ -82,27 +82,26 @@ void binary_postorder(struct binary_tree* tree, int* postorder, int* visited) {
 
 
 int main() { 
+  // initialize binary tree structure
   int num_nodes = 10;
   int nodevals[num_nodes];
   struct binary_tree tree[num_nodes];
   initialize_binary_tree(tree, num_nodes);
   
   // populate node value array
-  for (int i = 0; i < num_nodes; ++i) nodevals[i] = i;
   printf("\n%s\n", "NODE VALUES:");
+  for (int i = 0; i < num_nodes; ++i) nodevals[i] = i;  
   for (int i = 0; i < num_nodes; ++i) printf("%i ", nodevals[i]);
   putchar('\n');
 
-  // test ipow function
-  // for (int i = 0; i < 5; ++i) printf("2^%i = %i\n", i, ipow(2, i));
-
-  complete_binary_tree(tree, num_nodes, nodevals);
   printf("\n%s\n", "COMPLETE BINARY TREE:");
+  complete_binary_tree(tree, num_nodes, nodevals);
   for (int i = 0; i < num_nodes; ++i)
     printf("%p: {value: %i; left: %p; right: %p}\n",
 	   &tree[i], tree[i].value, tree[i].left, tree[i].right
 	   );
 
+  // TRAVERSAL DEMONSTRATIONS
   int i;
   
   // DEMONSTRATE INORDER
