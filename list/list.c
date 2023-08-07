@@ -47,7 +47,6 @@ linked_list build_list(int num_nodes, int* node_values) {
     prev = node;
   }
 
-  //list.head = &head;
   return list;
 }
 
@@ -82,12 +81,12 @@ slnode* find_value(linked_list* list, int value) {
   return curnode->next;
 }
 
-void insert_list_node(linked_list *list, int node_index, int node_value) {
+void insert_list_node(linked_list *list, int node_index, int value) {
   /* Insert a new node at specified index with specified value. */
   
   // create new node & allocate memory
   slnode *node = malloc(sizeof(slnode));
-  node->value = node_value;
+  node->value = value;
   node->next = NULL;
 
   // add new node at specified index
