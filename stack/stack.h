@@ -5,7 +5,7 @@
 
 #include <stddef.h>
 
-/* Use void pointer as StackVal type, so that we can create a stack
+/* Use void pointer as stack value type, so that we can create a stack
    of generic pointers. */
 typedef void * stack_val_t;
 
