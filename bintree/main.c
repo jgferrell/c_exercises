@@ -14,7 +14,7 @@ void bt_test_report(node_fn fn, bintree_t *root, char *name, char *exp) {
   printf("%s:", name);
   printf("\n---------------------------\n");
   printf("expctd: %s\nobsrvd: ", exp);
-  fn(root,  &print_node);  
+  fn(root, print_node);  
   putchar('\n');
 }
 
@@ -39,14 +39,13 @@ int main() {
   /* TRAVERSAL DEMONSTRATIONS WITH FUNCTION PASSING */
  
   /* DEMONSTRATE INORDER: 7 3 8 1 9 4 0 5 2 6 */
-  bt_test_report(&bintree_inorder, tree, "INORDER", "7 3 8 1 9 4 0 5 2 6");
+  bt_test_report(bintree_inorder, tree, "INORDER", "7 3 8 1 9 4 0 5 2 6");
 
   
   /* DEMONSTRATE PREORDER: 0 1 3 7 8 4 9 2 5 6 */
-  bt_test_report(&bintree_preorder, tree, "PREORDER", "0 1 3 7 8 4 9 2 5 6");
+  bt_test_report(bintree_preorder, tree, "PREORDER", "0 1 3 7 8 4 9 2 5 6");
 
   /* DEMONSTRATE POSTORDER: 7 8 3 9 4 1 5 6 2 0 */
-  int postorder[num_nodes];
   bt_test_report(bintree_postorder, tree, "POSTORDER", "7 8 3 9 4 1 5 6 2 0");
 
   /* free memory */
