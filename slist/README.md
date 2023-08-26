@@ -1,6 +1,6 @@
 # Singly-Linked List
 
-Impelementations herein based on the Singly-Linked List data
+Implementations herein based on the Singly-Linked List data
 structure.
 
 Reference: https://opendatastructures.org/
