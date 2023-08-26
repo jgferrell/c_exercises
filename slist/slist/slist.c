@@ -60,6 +60,8 @@ slnode_t * slist_insert_node(slist_t *list, int node_index, slnode_valptr_t valu
     /* adding new head node */
     node->next = list->head;
     list->head = node;
+    /* if this is the first node, add a tail */
+    if (list->length == 0) list->tail = node;
   } else if (node_index == list->length) {
     /* adding new tail node */
     list->tail->next = node;
