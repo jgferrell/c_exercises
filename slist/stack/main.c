@@ -4,15 +4,20 @@
 int main() {
   int size = 10;
   int values[size];
+
+  // array of arbitrary values
+  for (int i = 0; i < size; ++i) {
+    values[i] = i;
+  }
+
+  // build a stack; tests the push function
+  stack_t stack = { .length = 0, .head = NULL, .tail = NULL };  
   printf("Pushing to the stack:\n");
   for (int i = 0; i < size; ++i) {
     printf("%i ", i);
-    values[i] = i;
+    stack_push(&stack, &values[i]);
   }
   putchar('\n');
-
-  // build a stack; tests the push function
-  stack_t stack = stack_build(size, values, sizeof(int));
 
   // empty the stack; tests the pop function
   // should print: 9 8 7 6 5 4 3 2 1 0
