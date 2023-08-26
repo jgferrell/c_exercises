@@ -7,7 +7,7 @@ Reference: https://opendatastructures.org/
 
 ## Abstract Data Types
 
-1. List
-2. Stack
-3. Queue
-4. Deque
+1. [List](./slist)
+2. [Stack](./stack)
+3. [Queue](./queue)
+4. [Deque](./deque)
