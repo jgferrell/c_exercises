@@ -27,6 +27,18 @@ int main() {
     printf("%i ", *val);           // dereference int pointer to int
   }
   putchar('\n');
+
+
+  // test the stack_build function
+  printf("\nRepopulating the stack with `stack_build` function.\n");
+  stack = stack_build(size, values, sizeof(int));
+
+  printf("Popping from the stack:\n");
+  while (stack.head != NULL) {
+    int *val = stack_pop(&stack);  // cast void pointer to int pointer
+    printf("%i ", *val);           // dereference int pointer to int
+  }
+  putchar('\n');
   
   return 0;
 }
