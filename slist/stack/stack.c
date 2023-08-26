@@ -1,49 +1,25 @@
 #include "stack.h"
+#include "../slist/slist.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-stack_val_t stack_pop(stack_t *stack) {
-  // store current stack top and its value
-  stack_node *popped = stack->top;
-  stack_val_t *val = popped->value_ptr;
+stacknode_valptr_t stack_pop(stack_t *stack) {
+  // make sure stack is not empty before proceeding
+  if (stack->length == 0) return NULL;
   
-  // move stack top pointer down by one
-  stack->top = popped->prev;
-
-  // reduce stack length
-  stack->length = stack->length - 1;
-
-  // get rid of old stack top
-  free(popped);
+  // store current stack top and its value
+  stacknode_t *popped = stack->head;
+  stacknode_valptr_t val = popped->value_ptr;
+  
+  slist_delete_node(stack, 0);
   
   return val;
 }
 
-void stack_push(stack_t *stack, stack_val_t value_ptr) {
-  // create new node with provided value
-  stack_node *pushed = malloc(sizeof(stack_node));
-  pushed->value_ptr = value_ptr;
-
-  // push to top of stack
-  if (0 != stack->length) {
-    pushed->prev = stack->top;
-  } else { // link to previous node
-    pushed->prev = NULL;
-  } // already at top of stack
-  stack->top = pushed;
-
-  // increase stack length
-  stack->length = stack->length + 1;
+void stack_push(stack_t *stack, stacknode_valptr_t value_ptr) {
+  slist_insert_node(stack, 0, value_ptr);
 }
 
-stack_t stack_build(int length, stack_val_t value_ptrs, size_t value_size) {
-  // initialize new stack
-  stack_t stack;
-  stack.length = 0;
-
-  // push values onto stack
-  for (int i = 0; i < length; ++i) stack_push(&stack, value_ptrs + i * value_size);
-
-  // return stack
-  return stack;
+stack_t stack_build(int num_nodes, stacknode_valptr_t value_ptrs, size_t value_size) {
+  return slist_build(num_nodes, value_ptrs, value_size);
 }

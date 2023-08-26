@@ -17,9 +17,9 @@ int main() {
   // empty the stack; tests the pop function
   // should print: 9 8 7 6 5 4 3 2 1 0
   printf("Popping from the stack:\n");
-  while (stack.top != NULL) {
-    int *val = stack_pop(&stack);
-    printf("%i ", *val);    
+  while (stack.head != NULL) {
+    int *val = stack_pop(&stack);  // cast void pointer to int pointer
+    printf("%i ", *val);           // dereference int pointer to int
   }
   putchar('\n');
   
