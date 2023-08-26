@@ -6,3 +6,4 @@ bintree/bintree
 slist/slist/slist
 slist/stack/stack
 slist/queue/queue
+slist/deque/deque
