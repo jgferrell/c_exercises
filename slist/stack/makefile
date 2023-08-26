@@ -6,7 +6,7 @@ OBJFILES := stack.o main.o ../slist/slist.o
 
 stack: $(OBJFILES)
 	$(CC) $(CFLAGS) -o stack $(OBJFILES) $(LDFLAGS)
-stack.o: stack.c stack.h
+stack.o: stack.c stack.h ../slist/slist.h
 	$(CC) $(CFLAGS) -c stack.c -shared -FPIC -o stack.o
 ../slist/slist.o: ../slist/slist.c ../slist/slist.h
 	$(CC) $(CFLAGS) -c ../slist/slist.c -shared -FPIC -o ../slist/slist.o
