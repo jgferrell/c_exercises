@@ -89,34 +89,40 @@ dlnode_t * dlist_insert_node_at_index(dlist_t *list, int node_index,
 }
 
 void dlist_delete_node(dlist_t *list, dlnode_t *node) {
-  if (node == list->head) {
-    list->head = node->next;
+  if (list->length == 1) {
+    list->head = NULL;
+    list->tail = NULL;
+  } else if (node == list->head) {
+    list->head = list->head->next;
     if (list->head != NULL) list->head->prev = NULL;
   } else if (node == list->tail) {
-    list->tail = node->prev;
+    list->tail = list->tail->prev;
     if (list->tail != NULL) list->tail->next = NULL;
   } else {
     node->prev->next = node->next;
     node->next->prev = node->prev;
   }
-  list->length = list->length - 1;  
+  list->length = list->length - 1;
+
   free(node);
 }
 
 void dlist_empty(dlist_t *list) {
   dlnode_t *prev, *curnode;
-  prev = list->head;
-  while (prev->next != NULL) {
-    curnode = prev->next;
+  if (list->head != NULL) {
+    prev = list->head;
+    while (prev->next != NULL) {
+      curnode = prev->next;
+      free(prev);
+      prev = curnode;
+    }
     free(prev);
-    prev = curnode;
-  }
-  free(prev);
 
-  /* update list info */
-  list->length = 0;
-  list->head = NULL;
-  list->tail = NULL;
+    /* update list info */
+    list->length = 0;
+    list->head = NULL;
+    list->tail = NULL;
+  }
 }
 
 void dlist_delete_list(dlist_t *list) {
