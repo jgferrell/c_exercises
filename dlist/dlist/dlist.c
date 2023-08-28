@@ -11,7 +11,7 @@ dlnode_t * dlist_get_node(dlist_t* list, int node_index) {
     }
   } else {
     curnode = list->tail;
-    for (int i = 0; i < node_index-1; ++i) {
+    for (int i = 0; i < list->length - node_index - 1; ++i) {
       curnode = curnode->prev;
     }
   }
