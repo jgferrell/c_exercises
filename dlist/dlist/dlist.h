@@ -26,8 +26,8 @@ typedef struct {
   dlnode_t *tail;
 } dlist_t;
 
-/* Returns a properly initialized double-linked list. Allocates
-   memory. */
+/* Returns a pointer to a properly initialized double-linked
+   list. Allocates memory. */
 dlist_t * dlist_new_list();
 
 /* Returns a pointer to the node requested by index (index is the
@@ -36,13 +36,17 @@ dlnode_t * dlist_get_node(dlist_t *list, int node_index);
 
 /* Inserts a new node at specified index with specified value. Returns
    a pointer to the new node. */
-dlnode_t * dlist_insert_node_at_index(dlist_t *list, int node_index, dlnode_valptr_t value_ptr);
+dlnode_t * dlist_insert_node_at_index(dlist_t *list,
+				      int node_index,
+				      dlnode_valptr_t value_ptr);
 
 /* Inserts a new node into the list after `prev_node`. */
-dlnode_t * dlist_add_node_after(dlist_t *list, dlnode_t *prev_node, dlnode_valptr_t value_ptr);
+dlnode_t * dlist_add_node_after(dlist_t *list, dlnode_t *prev_node,
+				dlnode_valptr_t value_ptr);
 
 /* Inserts a new node into the list before `next_node`. */
-dlnode_t * dlist_add_node_before(dlist_t *list, dlnode_t *next_node, dlnode_valptr_t value_ptr);
+dlnode_t * dlist_add_node_before(dlist_t *list, dlnode_t *next_node,
+				 dlnode_valptr_t value_ptr);
 
 /* Delete the given node and update the list. */
 void dlist_delete_node(dlist_t *list, dlnode_t *node);
@@ -50,11 +54,10 @@ void dlist_delete_node(dlist_t *list, dlnode_t *node);
 /* Delete the node at the given index and update the list. */
 void dlist_delete_node_at_index(dlist_t *list, int node_index);
 
-/* Deletes all nodes from list, freeing allocated memory. */
+/* Deletes all nodes from list. */
 void dlist_empty(dlist_t *list);
 
-/* Deletes all nodes from list and deletes list, freeing allocated
-   memory. */
+/* Deletes the list entirely, freeing memory. */
 void dlist_delete_list(dlist_t *list);
 
 #endif /* DLIST_H_ */
