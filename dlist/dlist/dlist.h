@@ -22,8 +22,7 @@ typedef struct dlnode_t dlnode_t;
    and `tail` points to the last node. */
 typedef struct {
   int length;
-  dlnode_t *head;
-  dlnode_t *tail;
+  dlnode_t *dummy;
 } dlist_t;
 
 /* Returns a pointer to a properly initialized double-linked
@@ -34,12 +33,6 @@ dlist_t * dlist_new_list();
    number of nodes between target node and head node). */
 dlnode_t * dlist_get_node(dlist_t *list, int node_index);
 
-/* Inserts a new node at specified index with specified value. Returns
-   a pointer to the new node. */
-dlnode_t * dlist_insert_node_at_index(dlist_t *list,
-				      int node_index,
-				      dlnode_valptr_t value_ptr);
-
 /* Inserts a new node into the list after `prev_node`. */
 dlnode_t * dlist_add_node_after(dlist_t *list, dlnode_t *prev_node,
 				dlnode_valptr_t value_ptr);
@@ -47,6 +40,18 @@ dlnode_t * dlist_add_node_after(dlist_t *list, dlnode_t *prev_node,
 /* Inserts a new node into the list before `next_node`. */
 dlnode_t * dlist_add_node_before(dlist_t *list, dlnode_t *next_node,
 				 dlnode_valptr_t value_ptr);
+
+/* Inserts a new node with specified value right after the node at
+   the specified index. Returns a pointer to the new node. */
+dlnode_t * dlist_insert_node_after_index(dlist_t *list,
+					  int node_index,
+					  dlnode_valptr_t value_ptr);
+
+/* Inserts a new node with specified value right before the node at
+   the specified index. Returns a pointer to the new node. */
+dlnode_t * dlist_insert_node_before_index(dlist_t *list,
+					  int node_index,
+					  dlnode_valptr_t value_ptr);
 
 /* Delete the given node and update the list. */
 void dlist_delete_node(dlist_t *list, dlnode_t *node);
