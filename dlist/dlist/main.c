@@ -143,19 +143,40 @@ int main(void) {
   trav(list);
   
   printf("Adding nodes at arbitrary locations with dlist_add.\n");
-  int new_values[num_nodes];
-  for (int i = 0; i < num_nodes; ++i) new_values[i] = node_values[i] + num_nodes;
-  printf("Inserting v->i: ");
+  int arr0[num_nodes];
+  for (int i = 0; i < num_nodes; ++i) arr0[i] = node_values[i] + num_nodes;
+  printf("Inserting (i, v): ");
   for (int i = 0; i < num_nodes; ++i) {
     int j = rand() % (list->length + 1);
-    printf("%i->%i ", new_values[i], j);
-    dlist_add(list, j, &new_values[i]);
+    printf("(%i, %i) ", j, arr0[i]);
+    dlist_add(list, j, &arr0[i]);
   }
   br(1);
   trav(list);
-  
 
-  
+  printf("Deleting nodes at arbitrary locations with dlist_delete_node_at.\n");
+  printf("Deleting (i, v): ");
+  for (int i = 0; i < num_nodes; ++i) {
+    int j = rand() % (list->length + 1);
+    dlnode_t *n = dlist_get_node(list, j);
+    printf("(%i, %i) ", j, get_nodeval(n));
+    dlist_delete_node_at(list, j);
+  }
+  br(1);
+  trav(list);
+
+  printf("Changing node values with dlist_get_val_at and dlist_set_val_at.\n");
+  printf("New values: ");
+  int arr1[list->length];
+  for (int i = 0; i < list->length; ++i) {
+    int *p = dlist_get_val_at(list, i);
+    int j = *p;
+    arr1[i] = j * -1;
+    dlist_set_val_at(list, i, &arr1[i]);
+  }
+  br(1);
+  trav(list);
+
   printf("Deleting list.");
   dlist_delete_list(list);
   br(1);
