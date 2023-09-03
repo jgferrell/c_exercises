@@ -1,123 +1,160 @@
 #include "dlist.h"
 #include <stdio.h>
+#include <stdlib.h>
 
-#define trav_down() {				\
-    printf("Top down traversal : ");		\
-    curnode = list->head;			\
-    while (curnode != NULL) {			\
-      printf("%i ", get_nodeval(curnode));	\
-      curnode = curnode->next;			\
-    }						\
-    putchar('\n');				\
-  }
+/* Testing script for dlist. */
 
-#define trav_up() {\
-    printf("Bottom up traversal: ");		\
-    curnode = list->tail;			\
-    while (curnode != NULL) {			\
-      printf("%i ", get_nodeval(curnode));	\
-      curnode = curnode->prev;			\
-    }						\
-    putchar('\n');				\
-  }
+#define br(i) for(int j = 0; j < i; ++j) putchar('\n');
 
-#define br(i) {					\
-    for(int j = 0; j < i; ++j) {		\
-      putchar('\n');				\
-    }						\
-  }
+/* 
+** AUXILLARY FUNCTION DECLARATIONS 
+*/
 
+/* Traverse list down from head and then up from tail, printing a
+   report each way. */
+void trav(dlist_t *list);
+
+/* Traverse down from head and print report. */
+void trav_down(dlist_t *list);
+
+/* Traverse up from tail and print report. */
+void trav_up(dlist_t *list);
+
+/* Empty list and print report. */
+void empty(dlist_t *list);
 
 /* Dereference a node's value-pointer to an int value. */
+int get_nodeval(dlnode_t *node);
+
+/*
+** AUXILLARY FUNCTION DEFINITIONS
+*/
+
+void trav(dlist_t *list) {
+  trav_down(list);
+  trav_up(list);
+  br(1);
+}
+
+void trav_down(dlist_t *list) {
+  dlnode_t *curnode;
+  
+  printf("Top down traversal : ");
+  curnode = list->dummy->next;
+  while (curnode != list->dummy) {
+    printf("%i ", get_nodeval(curnode));
+    curnode = curnode->next;
+  }
+  br(1);
+}
+
+void trav_up(dlist_t *list) {
+  dlnode_t *curnode;
+
+  printf("Bottom up traversal: ");
+  curnode = list->dummy->prev;
+  while (curnode != list->dummy) {
+    printf("%i ", get_nodeval(curnode));
+    curnode = curnode->prev;
+  }
+  br(1);
+}
+
 int get_nodeval(dlnode_t *node) {
   int *p = node->value_ptr;
   int i = *p;
   return i;
 }
 
+void empty(dlist_t *list) {
+  printf("Emptying list with dlist_empty.\n");
+  dlist_empty(list);
+  printf("List length: %i", list->length);
+  br(2);
+}
+
+/*
+** MAIN TESTING FUNCTION
+*/
+
 int main(void) {
   /* Create list and array of arbitrary values. */
   dlist_t *list = dlist_new_list();
-  dlnode_t *curnode; // for traversals
-  
+
   int num_nodes = 10;
   int node_values[num_nodes];
   int storage[num_nodes];
   for (int i = 0; i < num_nodes; ++i) node_values[i] = i;
   
-  printf("Building list from top down with dlist_add_node_after.\n");
-  curnode = list->head;
+  printf("Building list with dlist_add.\n");
   for (int i = 0; i < num_nodes; ++i) {
-    curnode = dlist_add_node_after(list, curnode, &node_values[i]);    
+    dlist_add(list, i, &node_values[i]);    
   }
-  trav_down();
-  trav_up();
-  br(1);
+  trav(list);
   
   printf("Getting node by index: ");
   for (int i = 0; i < list->length; ++i) {
-    curnode = dlist_get_node(list, i);
-    printf("%i ", get_nodeval(curnode));
+    printf("%i ", get_nodeval(dlist_get_node(list, i)));
   }
   br(2);
   
   printf("Deleting each node from top down with dlist_delete_node.\n");
   printf("List length: ");
-  curnode = list->head;
-  for (int i = 0; curnode != NULL; ++i) {
+  for (int i; list->length > 0; ++i) {
     printf("%i ", list->length);
-    storage[i] = get_nodeval(list->head);
-    dlist_delete_node(list, curnode);
-    curnode = list->head;
+    storage[i] = get_nodeval(list->dummy->next);
+    dlist_delete_node(list, list->dummy->next);
   }
   printf("%i ", list->length);
   br(1);
-  printf("List->head value: ");
+  printf("List head value: ");
   for (int i = 0; i < num_nodes; ++i) {
     printf("%i ", storage[i]);
   }
-  if (list->head == NULL) printf("<NULL>");
+  if (list->dummy->next == list->dummy) printf("<NULL>");
   br(2);
 
-  printf("Building list from bottom up with dlist_add_node_before.\n");
-  curnode = list->tail;
+  printf("Building list with dlist_add.\n");
   for (int i = 0; i < num_nodes; ++i) {
-    curnode = dlist_add_node_after(list, curnode, &node_values[i]);    
+    dlist_add(list, i, &node_values[i]);    
   }
-  trav_down();
-  trav_up();
-  br(1);
+  trav(list);
   
   printf("Deleting each node from bottom up with dlist_delete_node.\n");
   printf("List length: ");
-  curnode = list->tail;
-  for (int i = 0; curnode != NULL; ++i) {
+  for (int i; list->length > 0; ++i) {
     printf("%i ", list->length);
-    storage[i] = get_nodeval(list->tail);
-    dlist_delete_node(list, curnode);
-    curnode = list->tail;
+    storage[i] = get_nodeval(list->dummy->prev);
+    dlist_delete_node(list, list->dummy->prev);
   }
   printf("%i ", list->length);
   br(1);
-  printf("List->tail value: ");
+  printf("List tail value: ");
   for (int i = 0; i < num_nodes; ++i) {
     printf("%i ", storage[i]);
   }
-  if (list->tail == NULL) printf("<NULL>");
+  if (list->dummy->prev == list->dummy) printf("<NULL>");
   br(2);
 
-  printf("Building list with dlist_insert_node_at_index.\n");
+  printf("Building list with dlist_add.\n");
   for (int i = 0; i < num_nodes; ++i) {
-    curnode = dlist_insert_node_at_index(list, i, &node_values[i]);
+    dlist_add(list, i, &node_values[i]);    
   }
-  trav_down();
-  trav_up();
-  br(1);
+  trav(list);
   
-  printf("Emptying list with dlist_empty.\n");
-  dlist_empty(list);
-  printf("List length: %i", list->length);
-  br(2);
+  printf("Adding nodes at arbitrary locations with dlist_add.\n");
+  int new_values[num_nodes];
+  for (int i = 0; i < num_nodes; ++i) new_values[i] = node_values[i] + num_nodes;
+  printf("Inserting v->i: ");
+  for (int i = 0; i < num_nodes; ++i) {
+    int j = rand() % (list->length + 1);
+    printf("%i->%i ", new_values[i], j);
+    dlist_add(list, j, &new_values[i]);
+  }
+  br(1);
+  trav(list);
+  
+
   
   printf("Deleting list.");
   dlist_delete_list(list);
