@@ -8,3 +8,6 @@ slist/stack/stack
 slist/queue/queue
 slist/deque/deque
 dlist/dlist/dlist
+dlist/stack/stack
+dlist/queue/queue
+dlist/deque/deque
