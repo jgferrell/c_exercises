@@ -3,7 +3,6 @@
 #ifndef DEQUE_H_
 #define DEQUE_H_
 
-#include <stddef.h>
 #include "../slist/slist.h"
 
 // slist AKA deque

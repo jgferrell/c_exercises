@@ -1,6 +1,5 @@
 #include "stack.h"
 #include "../slist/slist.h"
-#include <stdio.h>
 #include <stdlib.h>
 
 stacknode_valptr_t stack_pop(stack_t *stack) {

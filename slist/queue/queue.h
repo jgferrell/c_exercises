@@ -3,7 +3,6 @@
 #ifndef QUEUE_H_
 #define QUEUE_H_
 
-#include <stddef.h>
 #include "../slist/slist.h"
 
 // slist AKA queue

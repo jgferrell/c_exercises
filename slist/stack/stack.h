@@ -3,7 +3,6 @@
 #ifndef STACK_H_
 #define STACK_H_
 
-#include <stddef.h>
 #include "../slist/slist.h"
 
 // slist AKA stack

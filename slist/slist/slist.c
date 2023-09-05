@@ -1,5 +1,4 @@
 #include "slist.h"
-#include <stddef.h>
 #include <stdlib.h>
 
 slist_t slist_build(int num_nodes, slnode_valptr_t value_ptrs, size_t value_size) {

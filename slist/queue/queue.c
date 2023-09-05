@@ -1,6 +1,5 @@
 #include "queue.h"
 #include "../slist/slist.h"
-#include <stdio.h>
 #include <stdlib.h>
 
 queuenode_valptr_t queue_remove(queue_t *queue) {
