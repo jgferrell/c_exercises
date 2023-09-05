@@ -32,8 +32,7 @@ typedef struct {
 ** INITIALIZATION OPERATIONS
 */
 
-/* Returns a pointer to a properly initialized double-linked
-   list. Allocates memory. */
+/* Returns a pointer to a properly initialized double-linked list. */
 dlist_t * dlist_new_list();
 
 /*
