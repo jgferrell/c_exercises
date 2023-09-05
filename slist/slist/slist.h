@@ -3,7 +3,9 @@
 #ifndef SLIST_H_
 #define SLIST_H_
 
-#include <stddef.h>
+/*
+** DATA STRUCTURES & TYPES
+*/
 
 /* slnode_valptr_t: a pointer to a node-value */
 typedef void * slnode_valptr_t;
@@ -25,9 +27,16 @@ typedef struct {
   slnode_t *tail;
 } slist_t;
 
-/* Builds a singly-linked list from an array of node
-   value-pointers. */
-slist_t slist_build(int num_nodes, slnode_valptr_t value_ptrs, size_t value_size);
+/*
+** INITIALIZATION OPERATIONS
+*/
+
+/* Returns a pointer to a properly initialized singly-linked list. */
+slist_t * slist_new_list();
+
+/*
+** NODE OPERATIONS
+*/
 
 /* Returns a pointer to the node requested by index (index is the
    number of nodes between target node and head node). */
@@ -37,10 +46,20 @@ slnode_t * slist_get_node(slist_t *list, int node_index);
    a pointer to the new node. */
 slnode_t * slist_insert_node(slist_t *list, int node_index, slnode_valptr_t valptr);
 
-/* Delete the list node at specified index. */
-void slist_delete_node(slist_t *list, int node_index);
+/* Removes given node from given list and deletes node. */
+void slist_delete_node(slist_t *list, slnode_t *node);
 
-/* Deletes all nodes from list, freeing allocated memory. */
+/* Removes node at index of given list and deletes node. */
+void slist_delete_node_at(slist_t *list, int node_index);
+
+/*
+** LIST OPERATIONS
+*/
+
+/* Removes all nodes from list, but does not delete list. */
 void slist_empty(slist_t *list);
+
+/* Removes all nodes from list, and then deletes list. */
+void slist_delete_list(slist_t *list);
 
 #endif /* SLIST_H_ */

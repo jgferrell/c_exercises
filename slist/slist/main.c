@@ -1,6 +1,9 @@
 #include "slist.h"
 #include <stdio.h>
 
+#define SIZE 10
+#define br(i) { for(int j = 0; j < i; ++j) putchar('\n'); }
+
 /******************************************************
  * HOW TO PROPERLY RETRIEVE VALUE FROM A VALUE-POINTER:
  *   (implementation-level logic)
@@ -35,7 +38,7 @@ int get_node_val(slnode_t *node) {
    points to an int equal to the provided value. If no such node
    exists, returns NULL. */
 
-slnode_t * find_value(slist_t* list, int value) {
+slnode_t * find_value(slist_t *list, int value) {
   // return head node if it matches
   if (get_node_val(list->head) == value) {
     return list->head;
@@ -50,78 +53,123 @@ slnode_t * find_value(slist_t* list, int value) {
   return curnode->next;
 }
 
+void populate_list(slist_t *list, int values[SIZE]) {
+  printf("Populating linked list:\n");
+  for (int i = 0; i < SIZE; ++i) {
+    slnode_t *node = slist_insert_node(list, list->length, &values[i]);
+    printf("%i ", get_node_val(node));
+  }
+  br(1);
+}
 
+void traverse(slist_t *list) {
+  printf("Traversing linked list.\n");
+  slnode_t *curnode = list->head;
+  while (curnode != NULL) {
+    printf("%i ", get_node_val(curnode));
+    curnode = curnode->next;
+  }
+  br(1);
+}
 
 int main(void) {
-  int num_nodes = 10;
+  /* Array of arbitrary values. */
+  int values[SIZE];
+  for (int i = 0; i < SIZE; ++i) values[i] = i;
 
-  /* We're building a linked list of integer values: */
-  int node_values[num_nodes];
-  for (int i = 0; i < num_nodes; ++i) node_values[i] = i;
-  slist_t list = slist_build(num_nodes, node_values, sizeof(int));
-
-  /* Print the current state of the linked list: */
-  printf("LIST INFO:\n");
-  printf("ptr to head node:         %p\n",  list.head);
-  printf("ptr to tail node:         %p\n",  list.tail);
-  printf("list length:              %i\n", list.length);
-  putchar('\n');
-
-  /* TRAVERSING LIST AND ACCESSING SPECIFIC NODES */
-
-  /* Traverse the linked list and print pointers and values: */
-  printf("LINKED LIST TRAVERSAL:\n");
-  slnode_t *curnode = list.head;
-  while (curnode != NULL) {
-    printf("%p->value = %i\n", curnode, get_node_val(curnode));
-    curnode = curnode->next;
-  }
-  putchar('\n');
+  /* Create & populate new list. */
+  slist_t *list = slist_new_list();
+  populate_list(list, values);
+  traverse(list);
+  br(1);
 
   /* Show that we can get a node by its index: */
-  printf("GET NODE BY INDEX:\n");
-  for (int i = 0; i < list.length; ++i) {
-    slnode_t *node = slist_get_node(&list, i);
-    printf("[%i] %p->value = %i\n", i, node, get_node_val(node));
+  printf("Getting node by index:\n");
+  for (int i = 0; i < list->length; ++i) {
+    slnode_t *node = slist_get_node(list, i);
+    printf("%i ", get_node_val(node));
   }
-  putchar('\n');
+  br(2);
 
-  /* DELETING NODES FROM THE LIST */
+  /* DELETING NODES FROM THE LIST BY INDEX */
   
-  /* We can delete an arbitrary node: */
-  printf("DELETE NODE [4]:\n");
-  slist_delete_node(&list, 4);
-  printf("list.len:  %i\n", list.length);
-  curnode = list.head;
-  for (int i = 0; i < list.length; ++i) {
-    printf("[%i] %p->value = ", i, curnode);
-    printf("%i\n", get_node_val(curnode));
-    curnode = curnode->next;
-  }
-  putchar('\n');
+  /* We can delete an arbitrary middle node: */
+  printf("Deleting node at index 4.\n");
+  printf("Length before delete: %i\n", list->length);
+  slist_delete_node_at(list, 4);
+  printf("Length after delete:  %i\n", list->length);
+  traverse(list);
+  br(1);
 
   /* We can delete the head node: */
-  printf("DELETE HEAD NODE:\n");
-  slist_delete_node(&list, 0);
-  printf("list.len:  %i\n", list.length);
-  curnode = list.head;
-  for (int i = 0; i < list.length; ++i) {
-    printf("[%i] %p->value = %i\n", i, curnode, get_node_val(curnode));
-    curnode = curnode->next;
-  }
-  putchar('\n');
+  printf("Deleting head node at index 0:\n");
+  printf("Length before delete: %i\n", list->length);
+  slist_delete_node_at(list, 0);
+  printf("Length after delete:  %i\n", list->length);
+  traverse(list);
+  br(1);
 
   /* We can delete the tail node: */
-  printf("DELETE LAST NODE [%i]:\n", list.length - 1);
-  slist_delete_node(&list, list.length - 1);
-  printf("list.len:  %i\n", list.length);
-  curnode = list.head;
-  for (int i = 0; i < list.length; ++i) {
-    printf("[%i] %p->value = %i\n", i, curnode, get_node_val(curnode));
-    curnode = curnode->next;
-  }
-  putchar('\n');
+  printf("Deleting tail node at index %i:\n", list->length-1);
+  printf("Length before delete: %i\n", list->length);
+  slist_delete_node_at(list, list->length-1);
+  printf("Length after delete:  %i\n", list->length);
+  traverse(list);
+  br(1);
 
+  /* We can delete all nodes by index: */
+  printf("Deleting all remaining nodes by index.\n");
+  printf("Length before delete: %i\n", list->length);
+  while (list->length > 0) {
+    slist_delete_node_at(list, 0);
+  }
+  printf("Length after delete:  %i\n", list->length);
+  br(1);
+
+  printf("Repopulating list.\n");
+  populate_list(list, values);
+  traverse(list);
+  br(1);
+
+  /* DELETING NODES FROM THE LIST BY POINTER */
+
+    /* We can delete an arbitrary middle node: */
+  printf("Deleting node 4 steps away from head.\n");
+  printf("Length before delete: %i\n", list->length);
+  slist_delete_node(list, list->head->next->next->next->next);
+  printf("Length after delete:  %i\n", list->length);
+  traverse(list);
+  br(1);
+
+  /* We can delete the head node: */
+  printf("Deleting head node:\n");
+  printf("Length before delete: %i\n", list->length);
+  slist_delete_node(list, list->head);
+  printf("Length after delete:  %i\n", list->length);
+  traverse(list);
+  br(1);
+
+  /* We can delete the tail node: */
+  printf("Deleting tail node:\n");
+  printf("Length before delete: %i\n", list->length);
+  slist_delete_node(list, list->tail);
+  printf("Length after delete:  %i\n", list->length);
+  traverse(list);
+  br(1);
+
+  /* We can delete all nodes: */
+  printf("Deleting all remaining nodes.\n");
+  printf("Length before delete: %i\n", list->length);
+  while (list->length > 0) {
+    slist_delete_node(list, list->tail);
+  }
+  printf("Length after delete:  %i\n", list->length);
+  br(1);
+
+  printf("Repopulating list.\n");
+  populate_list(list, values);
+  traverse(list);
+  br(1);
 
   /* INSERTING NEW NODES INTO AN EXISTING LIST */
 
@@ -129,43 +177,28 @@ int main(void) {
   int new_nodes = 3;
   int new_nodes_arr[new_nodes];
   /* filling array with arbitrary int values */
-  for (int i = 0; i < new_nodes; ++i) new_nodes_arr[i] = num_nodes + i;
-  /* create a slnode_valptr_t to deliver the value-pointer */
-  slnode_valptr_t valptr;
+  for (int i = 0; i < new_nodes; ++i) new_nodes_arr[i] = SIZE + i;
   
-  printf("INSERT NEW HEAD NODE:\n");
-  valptr = &new_nodes_arr[0];
-  slist_insert_node(&list, 0, valptr);
-  printf("list.len:  %i\n", list.length);
-  curnode = list.head;
-  for (int i = 0; i < list.length; ++i) {
-    printf("[%i] %p->value = %i\n", i, curnode, get_node_val(curnode));
-    curnode = curnode->next;
-  }
+  printf("Insert new head node at index 0:\n");
+  printf("Length before insert: %i\n", list->length);
+  slist_insert_node(list, 0, &new_nodes_arr[0]);
+  printf("Length after insert: %i\n", list->length);
+  traverse(list);
   putchar('\n');
 
-  printf("INSERT NEW HEAD NODE [4]:\n");
-  valptr = &new_nodes_arr[1];
-  slist_insert_node(&list, 4, valptr);
-    printf("list.len:  %i\n", list.length);
-  curnode = list.head;
-  for (int i = 0; i < list.length; ++i) {
-    printf("[%i] %p->value = %i\n", i, curnode, get_node_val(curnode));
-    curnode = curnode->next;
-  }
+  printf("Insert new node at index 4:\n");
+  printf("Length before insert: %i\n", list->length);
+  slist_insert_node(list, 4, &new_nodes_arr[1]);
+  printf("Length after insert: %i\n", list->length);
+  traverse(list);
   putchar('\n');
 
-  printf("INSERT NEW TAIL NODE [%i]:\n", list.length);
-  valptr = &new_nodes_arr[2];
-  slist_insert_node(&list, list.length, valptr);
-  printf("list.len:  %i\n", list.length);
-  curnode = list.head;
-  for (int i = 0; i < list.length; ++i) {
-    printf("[%i] %p->value = %i\n", i, curnode, get_node_val(curnode));
-    curnode = curnode->next;
-  }
-  putchar('\n');
-
+  printf("Insert new tail node at index %i:\n", list->length);
+  printf("Length before insert: %i\n", list->length);
+  slist_insert_node(list, list->length, &new_nodes_arr[2]);
+  printf("Length after insert: %i\n", list->length);
+  traverse(list);
+  putchar('\n');  
 
   /* DEMONSTRATION OF IMPLEMENTATION-LEVEL find_value FUNCTION. */
   slnode_t *result;
@@ -173,34 +206,36 @@ int main(void) {
 
   find = -1;
   printf("FIND ABSENT VALUE (%i):\n", find);
-  result = find_value(&list, find);  
+  result = find_value(list, find);  
   printf("result: %p -> %i\n", result, get_node_val(result));
   putchar('\n');
 
-  find = get_node_val(list.head);
+  find = get_node_val(list->head);
   printf("FIND FIRST VALUE (%i):\n", find);
-  result = find_value(&list, find);  
+  result = find_value(list, find);  
   printf("result: %p -> %i\n", result, get_node_val(result));
   putchar('\n');
 
-  find = get_node_val(list.tail);
+  find = get_node_val(list->tail);
   printf("FIND LAST VALUE (%i):\n", find);
-  result = find_value(&list, find);  
+  result = find_value(list, find);  
   printf("result: %p -> %i\n", result, get_node_val(result));
   putchar('\n');
 
-  find = get_node_val(list.head->next->next->next->next);
+  find = get_node_val(list->head->next->next->next->next);
   printf("FIND 5TH VALUE (%i):\n", find);
-  result = find_value(&list, find);  
+  result = find_value(list, find);  
   printf("result: %p -> %i\n", result, get_node_val(result));
   putchar('\n');
   
-  printf("EMPTYING LIST:\n");
-  slist_empty(&list);
-  printf("LIST INFO:\n");
-  printf("ptr to head node:         %p\n",  list.head);
-  printf("ptr to tail node:         %p\n",  list.tail);
-  printf("list length:              %i\n", list.length);
-
+  printf("Emptying list.\n");
+  slist_empty(list);
+  printf("List length: %i\n", list->length);
+  putchar('\n');
+  
+  printf("Deleting list.");
+  slist_delete_list(list);
+  putchar('\n');
+ 
   return 0;
 }
