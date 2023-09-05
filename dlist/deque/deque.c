@@ -1,6 +1,5 @@
 #include "deque.h"
 #include "../dlist/dlist.h"
-#include <stdio.h>
 #include <stdlib.h>
 
 dequenode_valptr_t deque_remove_top(deque_t *deque) {
