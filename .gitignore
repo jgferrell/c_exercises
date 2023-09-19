@@ -2,6 +2,7 @@
 .#*
 *.o
 *~
+array/array/array
 bintree/bintree
 slist/slist/slist
 slist/stack/stack
